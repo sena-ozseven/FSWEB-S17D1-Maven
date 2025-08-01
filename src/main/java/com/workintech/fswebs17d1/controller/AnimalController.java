@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-//pom.xml'de dependecy olan spring-boot-starter-web paketinden geliyor.
+//pom.xml'de dependency olan spring-boot-starter-web paketinden geliyor.
 
 //default host name: http://localhost:8585  --> application.properties kısmında öyle ayarlandığım için.
 
@@ -77,6 +77,7 @@ public class AnimalController {
     //aynı zamanda da bir tane de requestbody almasını isityoruz, yeni animal objesi olması için.
     @PutMapping("/{id}")
     public Animal updateAnimal(@PathVariable("id") int id, @RequestBody Animal newAnimal) {
+        //CONTROL
         if (!animalMap.containsKey(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Animal not found with id: " + id);
         }
@@ -92,6 +93,7 @@ public class AnimalController {
 
     @DeleteMapping("/{id}")
     public void deleteAnimal(@PathVariable("id") int id) {
+        //CONTROL
         if (!animalMap.containsKey(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Animal not found with id: " + id);
         }
