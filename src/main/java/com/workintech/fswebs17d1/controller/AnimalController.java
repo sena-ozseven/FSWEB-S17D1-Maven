@@ -83,6 +83,8 @@ public class AnimalController {
     }
 
     @DeleteMapping("{id}")
-    public 
+    public void deleteAnimal(@PathVariable("id") int id) {
+        this.animalMap.remove(id);
+    }
 
 }
