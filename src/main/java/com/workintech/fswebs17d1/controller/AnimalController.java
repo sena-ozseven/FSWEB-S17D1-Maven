@@ -6,10 +6,14 @@ package com.workintech.fswebs17d1.controller;
 
 import com.workintech.fswebs17d1.entity.Animal;
 import jakarta.annotation.PostConstruct;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 //pom.xml'de dependecy olan spring-boot-starter-web paketinden geliyor.
 
@@ -35,4 +39,21 @@ public class AnimalController {
         this.animalMap.put(1, new Animal(1, "hamster")); //içine default olarak bir tane hayvan ekliyoruz.
     }
 
+
+    //listenin hepsini çekmek için:
+    //yani direkt olarak get("/http://localhost:8585/workintech/animal") atarsak bu çalışacak.
+    @GetMapping
+    public List<Animal> getAnimals() {
+        System.out.println("----animals get all triggered!");
+        //map'in valuelarını arraylist'e döndürüyoruz:
+        return new ArrayList<>(animalMap.values());
+    }
+
+    //bu methodda "/http://localhost:8585/workintech/animal" bağlantısını kullanmak için sonuna id göndermemiz gerekecek.
+    //yani /http://localhost:8585/workintech/animal/333 gibi, bu path'in karşılığı o id'ye sahip Animal'ı dönecek bu method sayesinde.
+    //spesifik bir kaydı almak için:
+    @GetMapping("{id}")
+    public Animal getAnimal(@PathVariable("id") int id) {
+
+    }
 }
