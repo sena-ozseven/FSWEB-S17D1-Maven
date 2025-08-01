@@ -6,10 +6,7 @@ package com.workintech.fswebs17d1.controller;
 
 import com.workintech.fswebs17d1.entity.Animal;
 import jakarta.annotation.PostConstruct;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,6 +51,23 @@ public class AnimalController {
     //spesifik bir kaydı almak için:
     @GetMapping("{id}")
     public Animal getAnimal(@PathVariable("id") int id) {
-
+        if (id < 0 ) {
+            System.out.println("id cannot be less than 0");
+            return null;
+        }
+        return this.animalMap.get(id);
     }
+
+    //React'ta gönderdiğimiz POST'ları karşılayan yer:
+    //yukarıda JS tarafında bir endpointe get isteği attıgımızda liste geliyor, bir endpointte id ile get isteği attığımızda spesifik kayıt geliyor.
+    //JSON dönüş yapar, aynı zamanda bir JSON'ı parametre olarak kabul eder.
+
+    //genellikle PostMappinglerde PathVariable görmeyiz çünkü artık @RequestBody var.
+    //Burada map'in içerisinde post ile animal ekleyebiliyoruz.
+    @PostMapping
+    public void addAnimal(@RequestBody Animal animal) {
+        this.animalMap.put(animal.getId(), animal);
+    }
+
+    
 }
