@@ -69,5 +69,20 @@ public class AnimalController {
         this.animalMap.put(animal.getId(), animal);
     }
 
-    
+
+    //id alma sebebimiz: bir güncelleme yaptıgımız için eski kaydın id'sini pathvariable olarak al diyoruz.
+    //aynı zamanda da bir tane de requestbody almasını isityoruz, yeni animal objesi olması için.
+    @PutMapping("{id}")
+    public Animal updateAnimal(@PathVariable("id") int id, @RequestBody Animal newAnimal) {
+        //update --> replace()
+        //bu id'deki yeri newAnimal objesiyle update etmesini istiyoruz:
+        this.animalMap.replace(id, newAnimal);
+        //benden animal objesi dönmemi istediği için ve id değişmediği için:
+        //yani eski kaydın id'si ile yeni kaydı besliyoruz. sonra da aynı kalan id ile update ettigimiz değerin yeni hali geliyor mu diye bakıyoruz böylece.
+        return this.animalMap.get(id);
+    }
+
+    @DeleteMapping("{id}")
+    public 
+
 }
