@@ -6,7 +6,9 @@ package com.workintech.fswebs17d1.controller;
 
 import com.workintech.fswebs17d1.entity.Animal;
 import jakarta.annotation.PostConstruct;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +19,7 @@ import java.util.Map;
 //default host name: http://localhost:8585  --> application.properties kısmında öyle ayarlandığım için.
 
 @RestController
-@RequestMapping(path = "/workintech/animal ")
+@RequestMapping(path = "/workintech/animal")
 //http://localhost:8585/workintech/animal --> AnimalController 
 public class AnimalController {
     private Map<Integer, Animal> animalMap;
@@ -49,14 +51,14 @@ public class AnimalController {
     //bu methodda "/http://localhost:8585/workintech/animal" bağlantısını kullanmak için sonuna id göndermemiz gerekecek.
     //yani /http://localhost:8585/workintech/animal/333 gibi, bu path'in karşılığı o id'ye sahip Animal'ı dönecek bu method sayesinde.
     //spesifik bir kaydı almak için:
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public Animal getAnimal(@PathVariable("id") int id) {
-        if (id < 0 ) {
-            System.out.println("id cannot be less than 0");
-            return null;
+        if (id < 0 || !animalMap.containsKey(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Animal not found with id: " + id);
         }
         return this.animalMap.get(id);
     }
+
 
     //React'ta gönderdiğimiz POST'ları karşılayan yer:
     //yukarıda JS tarafında bir endpointe get isteği attıgımızda liste geliyor, bir endpointte id ile get isteği attığımızda spesifik kayıt geliyor.
@@ -73,8 +75,12 @@ public class AnimalController {
 
     //id alma sebebimiz: bir güncelleme yaptıgımız için eski kaydın id'sini pathvariable olarak al diyoruz.
     //aynı zamanda da bir tane de requestbody almasını isityoruz, yeni animal objesi olması için.
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public Animal updateAnimal(@PathVariable("id") int id, @RequestBody Animal newAnimal) {
+        if (!animalMap.containsKey(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Animal not found with id: " + id);
+        }
+
         //update --> replace()
         //bu id'deki yeri newAnimal objesiyle update etmesini istiyoruz:
         this.animalMap.replace(id, newAnimal);
@@ -83,8 +89,12 @@ public class AnimalController {
         return this.animalMap.get(id);
     }
 
-    @DeleteMapping("{id}")
+
+    @DeleteMapping("/{id}")
     public void deleteAnimal(@PathVariable("id") int id) {
+        if (!animalMap.containsKey(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Animal not found with id: " + id);
+        }
         this.animalMap.remove(id);
     }
 
