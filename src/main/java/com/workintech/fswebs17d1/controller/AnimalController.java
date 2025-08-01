@@ -66,6 +66,7 @@ public class AnimalController {
     //Burada map'in içerisinde post ile animal ekleyebiliyoruz.
     @PostMapping
     public void addAnimal(@RequestBody Animal animal) {
+        System.out.println("addAnimal is triggered!");
         this.animalMap.put(animal.getId(), animal);
     }
 
