@@ -9,6 +9,7 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.Map;
 //pom.xml'de dependecy olan spring-boot-starter-web paketinden geliyor.
 
@@ -21,6 +22,17 @@ public class AnimalController {
     private Map<Integer, Animal> animalMap;
 
 
+
+    //SpringBoot projelerinde uygulama ayağa kalkarken bazı seylerin öncesinde setup haline getirilmesi/hazırlanması/load olması istendiğinde
+    //bu methodu herhangi bir yerden cagırmaya gerek kalmadan PostConstruct annotaitonıyla proje ayağa kalkarken bu method(loadAll) devreye giriyor
+    //...çalışıyor ve içindeki işlemleri execute ediyor. proje ayağa kalktıgında bir tane animalMap HashMap'i hazır ve içinde bir
+    //...tane hamster eklenmiş bir şekilde kullanıma hazır halde beklemesini sağlıyor.
+    //her controllerda PostConstruct yazma zorunlulugu yok.
     @PostConstruct
+    public void loadAll() {
+        System.out.println("PostConstruct calisti. ");
+        this.animalMap = new HashMap<>();    //animalMap initiliaze ediliyor.
+        this.animalMap.put(1, new Animal(1, "hamster")); //içine default olarak bir tane hayvan ekliyoruz.
+    }
 
 }
